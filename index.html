@@ -44,6 +44,8 @@
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/controls/OrbitControls.js"></script>
+    
     <script>
         // Scene setup
         const scene = new THREE.Scene();
@@ -62,6 +64,13 @@
 
         // Camera position
         camera.position.set(0, 1, 5);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.enableZoom = false;
+        controls.enablePan = true;
+        controls.enableRotate = true;
 
         // Animation mixer and action
         let mixer;
@@ -137,7 +146,8 @@
             if (targetMesh) {
                 const scrollPosition = window.scrollY;
                 const scrollFraction = Math.min(Math.max(scrollPosition / maxScroll, 0), 1);
-                const rotationAngle = scrollFraction * Math.PI * 2; // Full 360-degree rotation
+                const maxRotation = 4.309828870138479; // Maximum rotation in radians
+                const rotationAngle = scrollFraction * maxRotation;
                 targetMesh.rotation.x = -rotationAngle;
                 console.log('Mesh rotation - Name:', targetMesh.name, 'X-axis rotation:', rotationAngle);
             } else {
@@ -150,6 +160,7 @@
         function animate() {
             requestAnimationFrame(animate);
             renderer.render(scene, camera);
+            controls.update();
         }
         animate();
 
