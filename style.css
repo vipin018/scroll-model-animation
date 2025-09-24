@@ -25,3 +25,10 @@ canvas {
 #playButton:hover {
     background-color: #0056b3;
 }
+
+#stats {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
