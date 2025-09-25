@@ -13,6 +13,8 @@ const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 document.body.appendChild(renderer.domElement);
+document.body.style.height = "500vh";
+
 
 // Camera position
 camera.position.set(0, 1, 5);
@@ -105,12 +107,9 @@ function loadModel(modelName) {
         model.position.copy(modelData.position);
         currentModel = model;
 
-        boxHelper = new THREE.BoxHelper(model, 0xffff00);
-        scene.add(boxHelper);
-
         // Scale control
         const scaleValue = { scale: modelData.scale };
-        scaleControl = scaleFolder.add(scaleValue, 'scale', 0.01, 10).name('Uniform Scale').onChange(value => {
+        scaleControl = scaleFolder.add(scaleValue, 'scale', 0.001, 1).name('Uniform Scale').onChange(value => {
             if (currentModel) currentModel.scale.setScalar(value);
         });
 
@@ -156,7 +155,6 @@ const clock = new THREE.Clock();
 function animate() {
     requestAnimationFrame(animate);
     maxScroll = document.body.scrollHeight - window.innerHeight; // Update maxScroll dynamically
-    if (boxHelper) boxHelper.update();
     controls.update();
     renderer.render(scene, camera);
     stats.begin();
